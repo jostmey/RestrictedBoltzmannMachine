@@ -44,11 +44,15 @@
 	Nv = 28^2+10
 	Nh = 500
 
+	# Standard deviation of Gaussian prior over the parameters.
+	#
+	sigma = 0.1
+
 	# Initialize neural network parameters.
 	#
-	b = 0.1*randn(Nv)
-	W = 0.1*randn(Nv, Nv)
-	a = 0.1*randn(Nh)
+	b = sigma*randn(Nv)
+	W = sigma*randn(Nv, Nh)
+	a = sigma*randn(Nh)
 
 	# Persistent states.
 	#
@@ -60,7 +64,7 @@
 
 	# Weight decay.
 	#
-	decay = 0.1
+	decay = (N_minibatch/N_datapoints)/sigma^2
 
 	# Momentum factor.
 	#
@@ -85,14 +89,14 @@
 	# Holds change in parameters from a minibatch.
 	#
 	db = zeros(Nv)
-	dW = zeros(Nv, Nv)
+	dW = zeros(Nv, Nh)
 	da = zeros(Nh)
 
 	# Repeatedly update parameters.
 	#
 	for i = 1:N_updates
 
-		# Collect minibatch of data-driven samples.
+		# Collect data-driven samples.
 		#
 		for j = 1:N_minibatch
 
@@ -100,20 +104,20 @@
 			#
 			k = rand(1:N_datapoints)
 
-			x = 6.0*features[k,:]'-3.0
+			x = features[k,:]'
 
 			z = zeros(10)
 			z[round(Int, labels[k])+1] = 1.0
 
 			# Gibbs sampling.
 			#
-			pv = [x,z]
+			pv = [x;z]
 			v = state(pv)
 
 			ph = sigmoid(W'*v+a)
 			h = state(ph)
 
-			#
+			# Summate derivative calculated at each sample.
 			#
 			db += v
 			dW += v*h'
@@ -121,7 +125,7 @@
 
 		end
 
-		# Collect samples of the model using the Monte Carlo method.
+		# Collect samples from the model.
 		#
 		for j = 1:N_minibatch
 
@@ -141,8 +145,8 @@
 			#
 			persistent[:,j] = v
 
-			#
-			#
+			# Add derivative calculated at this sample.
+			# Summate derivative calculated at each sample.
 			db -= v
 			dW -= v*h'
 			da -= h
@@ -151,9 +155,9 @@
 
 		# Update parameters using stochastic gradient descent.
 		#
-		b += alpha*db
-		W += alpha*dW
-		a += alpha*da
+		b += alpha*(db-decay*b)
+		W += alpha*(dW-decay*W)
+		a += alpha*(da-decay*a)
 
 		# Reset the parameter changes from the minibatch (scale by momentum factor).
 		#
