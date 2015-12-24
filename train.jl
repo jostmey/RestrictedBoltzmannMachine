@@ -6,6 +6,14 @@
 ##########################################################################################
 
 ##########################################################################################
+# Packages
+##########################################################################################
+
+	# Load tools for sampling N-way outcomes according to a set of weights.
+	#
+	using StatsBase
+
+##########################################################################################
 # Dataset
 ##########################################################################################
 
@@ -37,7 +45,8 @@
 	# Schedule for updating the neural network.
 	#
 	N_minibatch = 100
-	N_updates = round(Int, N_datapoints/N_minibatch)*500
+#	N_updates = round(Int, N_datapoints/N_minibatch)*500
+N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 	# Number of neurons in each layer.
 	#
@@ -73,10 +82,12 @@
 	# Activation functions.
 	#
 	sigmoid(x) = 1.0./(1.0+exp(-x))
+	softmax(x) = exp(x)./sum(exp(x))
 
 	# Sampling methods.
 	#
 	state(p) = 1.0*(rand(size(p)) .<= p)
+	choose(p) = ( y = zeros(size(p)) ; i = sample(WeightVec(p[:])) ; y[i] = 1.0 ; y )
 
 ##########################################################################################
 # Train
