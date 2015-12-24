@@ -92,10 +92,9 @@
 	#
 	for i = 1:N_updates
 
-		#
+		# Collect minibatch of data-driven samples.
 		#
 		for j = 1:N_minibatch
-
 
 			# Randomly load item from the dataset (part of stochastic gradient descent).
 			#
@@ -122,7 +121,7 @@
 
 		end
 
-		#
+		# Collect samples of the model using the Monte Carlo method.
 		#
 		for j = 1:N_minibatch
 
