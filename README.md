@@ -4,8 +4,8 @@ Work in progress. Please check back later ...
 
 ## Download
 
-* Download: [zip](https://github.com/jostmey/DeepNeuralClassifieer/zipball/master)
-* Git: `git clone https://github.com/jostmey/DeepNeuralClassifier`
+* Download: [zip](https://github.com/jostmey/RestrictedBoltzmannMachine/zipball/master)
+* Git: `git clone https://github.com/jostmey/RestrictedBoltzmannMachine`
 
 ## REQUIREMENTS
 
@@ -13,5 +13,8 @@ The code requires the Julia runtime environment. Instructions on how to download
 
 ## RUN
 
+
+
 ## THEORY
+
 
