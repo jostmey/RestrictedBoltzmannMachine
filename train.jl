@@ -60,7 +60,7 @@
 
 	# Initial learning rate.
 	#
-	alpha = 0.001
+	alpha = 0.00001
 
 	# Momentum factor.
 	#
