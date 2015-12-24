@@ -62,10 +62,6 @@
 	#
 	alpha = 0.001
 
-	# Weight decay.
-	#
-	decay = (N_minibatch/N_datapoints)/sigma^2
-
 	# Momentum factor.
 	#
 	momentum = 0.75
@@ -155,9 +151,9 @@
 
 		# Update parameters using stochastic gradient descent.
 		#
-		b += alpha*(db-decay*b)
-		W += alpha*(dW-decay*W)
-		a += alpha*(da-decay*a)
+		b += alpha*((N_datapoints/N_minibatch)*db-b/sigma^2)
+		W += alpha*((N_datapoints/N_minibatch)*dW-W/sigma^2)
+		a += alpha*((N_datapoints/N_minibatch)*da-a/sigma^2)
 
 		# Reset the parameter changes from the minibatch (scale by momentum factor).
 		#
