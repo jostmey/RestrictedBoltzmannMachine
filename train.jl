@@ -84,9 +84,9 @@
 
 	# Holds change in parameters from a minibatch.
 	#
-	db = 0.1*randn(Nv)
-	dW = 0.1*randn(Nv, Nv)
-	da = 0.1*randn(Nh)
+	db = zeros(Nv)
+	dW = zeros(Nv, Nv)
+	da = zeros(Nh)
 
 	# Repeatedly update parameters.
 	#
