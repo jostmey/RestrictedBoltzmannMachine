@@ -126,7 +126,7 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 			z = zeros(10)
 			z[round(Int, labels[k])+1] = 1.0
 
-			# Gibbs sampling.
+			# Gibbs sampling driven by the data.
 			#
 			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 			h = state(ph)
@@ -150,7 +150,7 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 			x = x_persist[:,j]
 			z = z_persist[:,j]
 
-			# Gibbs sampling.
+			# Gibbs sampling driven by the model.
 			#
 			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 			h = state(ph)
