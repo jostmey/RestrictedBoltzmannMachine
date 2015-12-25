@@ -49,14 +49,17 @@
 
 	# Number of neurons in each layer.
 	#
-	Nv = 28^2+10
-	Nh = 500
+	N_x = 28^2
+	N_z = 10
+	N_h = 500
 
-	# Initialize neural network parameters.
+	# Load neural network parameters.
 	#
-	b = readcsv("bin/train_b.csv")
-	W = readcsv("bin/train_W.csv")
-	a = readcsv("bin/train_a.csv")
+	b_x = readcsv("bin/train_b_x.csv")
+	W_xh = readcsv("bin/train_W_xh.csv")
+	b_z = readcsv("bin/train_b_z.csv")
+	W_zh = readcsv("bin/train_W_zh.csv")
+	b_h = readcsv("bin/train_b_h.csv")
 
 ##########################################################################################
 # Methods
@@ -85,49 +88,47 @@
 	N_correct = 0.0
 	N_tries = 0.0
 
-	#
+	# Classify each item in the dataset.
 	#
 	for i = 1:N_datapoints
 
+		# Track expectation of z.
 		#
-		#
-		Ev = zeros(10)
+		Ez = zeros(N_z)
 
-		#
+		# Repeatedly sample the model.
 		#
 		for j = 1:N_samples
 
-			# Randomly load item from the dataset (part of stochastic gradient descent).
+			# Load the features into the visible layer.
 			#
-			x = features[i,:]'
+			x = state(features[i,:]')
 
-			z = zeros(10)
-			z[rand(1:10)] = 1.0
-
-			# Gibbs sampling.
+			# Load random label into the visible layer.
 			#
-			pv = [x;z]
-			v = state(pv)
+			z = choose(rand(N_z))
 
+			# Repeated passes of Gibbs sampling.
+			#
 			for k = 1:N_passes
 
-				ph = sigmoid(W'*v+a)
+				ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 				h = state(ph)
 
-				pv[28^+1:end] = softmax(W[28^2+1:end,:]*h+b[28^2+1:end])
-				v[28^+1:end] = choose(pv[28^+1:end])
+				pz = softmax(W_zh*h+b_z)
+				z = choose(pz)
 
 			end
 
+			# Update expectation of z.
 			#
-			#
-			Ev += pv[28^+1:end]/N_samples
+			Ez += pz/N_samples
 
 		end
 
 		# Update percentage of guesses that are correct.
 		#
-		guess = findmax(Ev)[2]-1
+		guess = findmax(Ez)[2]-1
 		answer = round(Int, labels[i])
 		if guess == answer
 			N_correct += 1.0

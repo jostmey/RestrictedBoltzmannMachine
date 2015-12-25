@@ -50,8 +50,9 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 	# Number of neurons in each layer.
 	#
-	Nv = 28^2+10
-	Nh = 500
+	N_x = 28^2
+	N_z = 10
+	N_h = 500
 
 	# Standard deviation of Gaussian prior over the parameters.
 	#
@@ -59,13 +60,16 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 	# Initialize neural network parameters.
 	#
-	b = sigma*randn(Nv)
-	W = sigma*randn(Nv, Nh)
-	a = sigma*randn(Nh)
+	b_x = sigma*randn(N_x)
+	W_xh = sigma*randn(N_x, N_h)
+	b_z = sigma*randn(N_z)
+	W_zh = sigma*randn(N_z, N_h)
+	b_h = sigma*randn(N_h)
 
 	# Persistent states.
 	#
-	persistent = rand(0.0:1.0, Nv, N_minibatch)
+	x_persist = rand(0.0:1.0, N_x, N_minibatch)
+	z_persist = rand(0.0:1.0, N_z, N_minibatch)
 
 	# Initial learning rate.
 	#
@@ -95,9 +99,11 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 	# Holds change in parameters from a minibatch.
 	#
-	db = zeros(Nv)
-	dW = zeros(Nv, Nh)
-	da = zeros(Nh)
+	db_x = zeros(N_x)
+	dW_xh = zeros(N_x, N_h)
+	db_z = zeros(N_z)
+	dW_zh = zeros(N_z, N_h)
+	db_h = zeros(N_h)
 
 	# Repeatedly update parameters.
 	#
@@ -107,28 +113,31 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 		#
 		for j = 1:N_minibatch
 
-			# Randomly load item from the dataset (part of stochastic gradient descent).
+			# Randomly select row from the dataset (part of stochastic gradient descent).
 			#
 			k = rand(1:N_datapoints)
 
-			x = features[k,:]'
+			# Load the features into the visible layer.
+			#
+			x = state(features[k,:]')
 
+			# Load the labels into the visible layer.
+			#
 			z = zeros(10)
 			z[round(Int, labels[k])+1] = 1.0
 
 			# Gibbs sampling.
 			#
-			pv = [x;z]
-			v = state(pv)
-
-			ph = sigmoid(W'*v+a)
+			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 			h = state(ph)
 
 			# Summate derivative calculated at each sample.
 			#
-			db += v
-			dW += v*h'
-			da += h
+			db_x += x
+			dW_xh += x*h'
+			db_z += z
+			dW_zh += z*h'
+			db_h += h
 
 		end
 
@@ -138,39 +147,50 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 			# Load persistent state.
 			#
-			v = persistent[:,j]
+			x = x_persist[:,j]
+			z = z_persist[:,j]
 
 			# Gibbs sampling.
 			#
-			ph = sigmoid(W'*v+a)
+			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 			h = state(ph)
 
-			pv = sigmoid(W*h+b)
-			v = state(pv)
+			px = sigmoid(W_xh*h+b_x)
+			x = state(px)
 
-			# Save updated persistent state.
+			pz = softmax(W_zh*h+b_z)
+			z = choose(pz)
+
+			# Save persistent state.
 			#
-			persistent[:,j] = v
+			x_persist[:,j] = x
+			z_persist[:,j] = z
 
-			# Add derivative calculated at this sample.
 			# Summate derivative calculated at each sample.
-			db -= v
-			dW -= v*h'
-			da -= h
+			#
+			db_x -= x
+			dW_xh -= x*h'
+			db_z -= z
+			dW_zh -= z*h'
+			db_h -= h
 
 		end
 
 		# Update parameters using stochastic gradient descent.
 		#
-		b += alpha*((N_datapoints/N_minibatch)*db-b/sigma^2)
-		W += alpha*((N_datapoints/N_minibatch)*dW-W/sigma^2)
-		a += alpha*((N_datapoints/N_minibatch)*da-a/sigma^2)
+		b_x += alpha*((N_datapoints/N_minibatch)*db_x-b_x/sigma^2)
+		W_xh += alpha*((N_datapoints/N_minibatch)*dW_xh-W_xh/sigma^2)
+		b_z += alpha*((N_datapoints/N_minibatch)*db_z-b_z/sigma^2)
+		W_zh += alpha*((N_datapoints/N_minibatch)*dW_zh-W_zh/sigma^2)
+		b_h += alpha*((N_datapoints/N_minibatch)*db_h-b_h/sigma^2)
 
 		# Reset the parameter changes from the minibatch (scale by momentum factor).
 		#
-		db *= momentum
-		dW *= momentum
-		da *= momentum
+		db_x *= momentum
+		dW_xh *= momentum
+		db_z *= momentum
+		dW_zh *= momentum
+		db_h *= momentum
 
 		# Decrease the learning rate (part of stochastic gradient descent).
 		#
@@ -186,13 +206,17 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 			println("  Batch = $(round(Int, i))")
 			println("  alpha = $(round(alpha, 8))")
 			println("PARAMETERS")
-			println("  Mean(b) = $(round(mean(b), 5)), Max(b) = $(round(maximum(b), 5)), Min(b) = $(round(minimum(b), 5))")
-			println("  Mean(W) = $(round(mean(W), 5)), Max(W) = $(round(maximum(W), 5)), Min(W) = $(round(minimum(W), 5))")
-			println("  Mean(a) = $(round(mean(a), 5)), Max(a) = $(round(maximum(a), 5)), Min(a) = $(round(minimum(a), 5))")
+			println("  Mean(b_x) = $(round(mean(b_x), 5)), Max(b_x) = $(round(maximum(b_x), 5)), Min(b_x) = $(round(minimum(b_x), 5))")
+			println("  Mean(W_xh) = $(round(mean(W_xh), 5)), Max(W_xh) = $(round(maximum(W_xh), 5)), Min(W_xh) = $(round(minimum(W_xh), 5))")
+			println("  Mean(b_z) = $(round(mean(b_z), 5)), Max(b_z) = $(round(maximum(b_z), 5)), Min(b_z) = $(round(minimum(b_z), 5))")
+			println("  Mean(W_zh) = $(round(mean(W_zh), 5)), Max(W_zh) = $(round(maximum(W_zh), 5)), Min(W_zh) = $(round(minimum(W_zh), 5))")
+			println("  Mean(b_h) = $(round(mean(b_h), 5)), Max(b_h) = $(round(maximum(b_h), 5)), Min(b_h) = $(round(minimum(b_h), 5))")
 			println("UPDATES")
-			println("  Mean(db) = $(round(mean(db), 5)), Max(db) = $(round(maximum(db), 5)), Min(db) = $(round(minimum(db), 5))")
-			println("  Mean(dW) = $(round(mean(dW), 5)), Max(dW) = $(round(maximum(dW), 5)), Min(dW) = $(round(minimum(dW), 5))")
-			println("  Mean(da) = $(round(mean(da), 5)), Max(da) = $(round(maximum(da), 5)), Min(da) = $(round(minimum(da), 5))")
+			println("  Mean(db_x) = $(round(mean(db_x), 5)), Max(db_x) = $(round(maximum(db_x), 5)), Min(db_x) = $(round(minimum(db_x), 5))")
+			println("  Mean(dW_xh) = $(round(mean(dW_xh), 5)), Max(dW_xh) = $(round(maximum(dW_xh), 5)), Min(dW_xh) = $(round(minimum(dW_xh), 5))")
+			println("  Mean(db_z) = $(round(mean(db_z), 5)), Max(db_z) = $(round(maximum(db_z), 5)), Min(db_z) = $(round(minimum(db_z), 5))")
+			println("  Mean(dW_zh) = $(round(mean(dW_zh), 5)), Max(dW_zh) = $(round(maximum(dW_zh), 5)), Min(dW_zh) = $(round(minimum(dW_zh), 5))")
+			println("  Mean(db_h) = $(round(mean(db_h), 5)), Max(db_h) = $(round(maximum(db_h), 5)), Min(db_h) = $(round(minimum(db_h), 5))")
 			println("")
 			flush(STDOUT)
 
@@ -210,11 +234,14 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 	# Save the parameters.
 	#
-	writecsv("bin/train_b.csv", b)
-	writecsv("bin/train_W.csv", W)
-	writecsv("bin/train_a.csv", a)
+	writecsv("bin/train_b_x.csv", b_x)
+	writecsv("bin/train_W_xh.csv", W_xh)
+	writecsv("bin/train_b_z.csv", b_z)
+	writecsv("bin/train_W_zh.csv", W_zh)
+	writecsv("bin/train_b_h.csv", b_h)
 
 	# Save persistent state.
 	#
-	writecsv("bin/train_persistent.csv", persistent)
+	writecsv("bin/train_x_persist.csv", x_persist)
+	writecsv("bin/train_z_persist.csv", z_persist)
 
