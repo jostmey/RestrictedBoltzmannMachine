@@ -69,7 +69,7 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 	# Persistent states.
 	#
 	x_persist = rand(0.0:1.0, N_x, N_minibatch)
-	z_persist = rand(0.0:1.0, N_z, N_minibatch)
+	z_persist = zeros(N_z, N_minibatch)
 
 	# Initial learning rate.
 	#
