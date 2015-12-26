@@ -102,11 +102,13 @@
 
 			# Load the features into the visible layer.
 			#
-			x = state(features[i,:]')
+			px = features[i,:]'
+			x = state(px)
 
 			# Load random label into the visible layer.
 			#
-			z = choose(rand(N_z))
+			pz = rand(N_z)
+			z = choose(pz)
 
 			# Repeated passes of Gibbs sampling.
 			#

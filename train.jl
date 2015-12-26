@@ -45,8 +45,7 @@
 	# Schedule for updating the neural network.
 	#
 	N_minibatch = 100
-#	N_updates = round(Int, N_datapoints/N_minibatch)*500
-N_updates = round(Int, N_datapoints/N_minibatch)*50
+	N_updates = round(Int, N_datapoints/N_minibatch)*500
 
 	# Number of neurons in each layer.
 	#
@@ -119,7 +118,8 @@ N_updates = round(Int, N_datapoints/N_minibatch)*50
 
 			# Load the features into the visible layer.
 			#
-			x = state(features[k,:]')
+			px = features[k,:]'
+			x = state(px)
 
 			# Load the labels into the visible layer.
 			#
