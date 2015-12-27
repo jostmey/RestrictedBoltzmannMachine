@@ -65,11 +65,6 @@
 	W_zh = sigma*randn(N_z, N_h)
 	b_h = sigma*randn(N_h)
 
-	# Persistent states.
-	#
-	x_persist = rand(0.0:1.0, N_x, N_minibatch)
-	z_persist = zeros(N_z, N_minibatch)
-
 	# Initial learning rate.
 	#
 	alpha = 0.00001
@@ -90,11 +85,16 @@
 	# Sampling methods.
 	#
 	state(p) = 1.0*(rand(size(p)) .<= p)
-	choose(p) = ( y = zeros(size(p)) ; i = sample(WeightVec(p[:])) ; y[i] = 1.0 ; y )
+	choose(p) = ( y = zeros(size(p)) ; for i=1:size(p, 2) j=sample(WeightVec(p[:,i])) ; y[j,i] = 1.0 end  ; y )
 
 ##########################################################################################
 # Train
 ##########################################################################################
+
+	# Persistent states.
+	#
+	x_persist = rand(0.0:1.0, N_x, N_minibatch)
+	z_persist = choose(rand(N_z, N_minibatch))
 
 	# Holds change in parameters from a minibatch.
 	#
@@ -239,9 +239,4 @@
 	writecsv("bin/train_b_z.csv", b_z)
 	writecsv("bin/train_W_zh.csv", W_zh)
 	writecsv("bin/train_b_h.csv", b_h)
-
-	# Save persistent state.
-	#
-	writecsv("bin/train_x_persist.csv", x_persist)
-	writecsv("bin/train_z_persist.csv", z_persist)
 
