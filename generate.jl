@@ -58,13 +58,11 @@
 	#
 	for i = 1:N_samples
 
-		# Load random features into the visible layer.
-		#
-		x = state(rand(0.0:1.0, N_x))
-
-		# Load random label into the visible layer.
-		#
-		z = choose(rand(N_z))
+                # Randomly initialize neural network.
+                #
+                x = state(rand(0.0:1.0, N_x))
+                h = state(rand(0.0:1.0, N_h))
+                z = choose(rand(N_z))
 
 		# Repeated passes of Gibbs sampling.
 		#
