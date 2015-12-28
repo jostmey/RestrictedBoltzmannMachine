@@ -131,7 +131,7 @@
 			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 			h = state(ph)
 
-			# Summate derivative calculated at each sample.
+			# Summate logarithmic derivative calculated at each sample.
 			#
 			db_x += x
 			dW_xh += x*h'
@@ -166,7 +166,7 @@
 			x_persist[:,j] = x
 			z_persist[:,j] = z
 
-			# Summate derivative calculated at each sample.
+			# Summate logarithmic derivative calculated at each sample.
 			#
 			db_x -= x
 			dW_xh -= x*h'
