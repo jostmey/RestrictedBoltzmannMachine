@@ -83,28 +83,28 @@
 	#
 	for i = 1:N_samples
 
-			# Load random features into the visible layer.
-			#
-			x = state(rand(0.0:1.0, N_x))
+		# Load random features into the visible layer.
+		#
+		x = state(rand(0.0:1.0, N_x))
 
-			# Load random label into the visible layer.
-			#
-			z = choose(rand(N_z))
+		# Load random label into the visible layer.
+		#
+		z = choose(rand(N_z))
 
-			# Repeated passes of Gibbs sampling.
-			#
-			for k = 1:N_passes
+		# Repeated passes of Gibbs sampling.
+		#
+		for k = 1:N_passes
 
-				ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
-				h = state(ph)
+			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
+			h = state(ph)
 
-				px = sigmoid(W_xh*h+b_x)
-				x = state(px)
+			px = sigmoid(W_xh*h+b_x)
+			x = state(px)
 
-				pz = softmax(W_zh*h+b_z)
-				z = choose(pz)
+			pz = softmax(W_zh*h+b_z)
+			z = choose(pz)
 
-			end
+		end
 
 			# Save the samples.
 			#
