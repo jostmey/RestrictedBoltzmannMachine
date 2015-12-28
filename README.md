@@ -34,3 +34,16 @@ The percentage of correct answers will be written at the end of the text file `t
 ## THEORY
 
 WORK IN PROGRESS... CHECK BACK LATER...
+
+# Model
+
+In a restricted Boltzmann machine (RBM), the neurons are divided into two layers: The visible layer that receive sensory input and the hidden layer, which is connected to the visible layer. No connections exist between neurons in the same layer, which is why this type of Boltzmann machine is said to be "restricted". The model is generative meaning that it will learn a probability distribution over its sensory input. The model is typically described using an energy function `E(v,h)=v`<sup>T</sup>`*W*h+b*v+a*h`. Here `v` and `h` are vectors representing the state of the neurons in the visible and hidden layers, respectively. `W` is matrix describing the weights of the connections between neurons in the visible and hidden layers, and `b` and `a` are vectors that describe the biases of the neurons in visible and hidden layers, respectively.
+
+
+
+
+
+
+
+
+
