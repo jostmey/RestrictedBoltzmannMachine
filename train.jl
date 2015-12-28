@@ -87,6 +87,10 @@
 	state(p) = 1.0*(rand(size(p)) .<= p)
 	choose(p) = ( y = zeros(size(p)) ; for i=1:size(p, 2) j=sample(WeightVec(p[:,i])) ; y[j,i] = 1.0 end  ; y )
 
+	# Logarithmic derivative of the prior distribution.
+	#
+	dlogn(theta) = -theta/sigma^2
+
 ##########################################################################################
 # Train
 ##########################################################################################
@@ -178,11 +182,11 @@
 
 		# Update parameters using stochastic gradient descent.
 		#
-		b_x += alpha*((N_datapoints/N_minibatch)*db_x-b_x/sigma^2)
-		W_xh += alpha*((N_datapoints/N_minibatch)*dW_xh-W_xh/sigma^2)
-		b_z += alpha*((N_datapoints/N_minibatch)*db_z-b_z/sigma^2)
-		W_zh += alpha*((N_datapoints/N_minibatch)*dW_zh-W_zh/sigma^2)
-		b_h += alpha*((N_datapoints/N_minibatch)*db_h-b_h/sigma^2)
+		b_x += alpha*((N_datapoints/N_minibatch)*db_x+dlogn(b_x))
+		W_xh += alpha*((N_datapoints/N_minibatch)*dW_xh+dlogn(W_xh))
+		b_z += alpha*((N_datapoints/N_minibatch)*db_z+dlogn(b_z))
+		W_zh += alpha*((N_datapoints/N_minibatch)*dW_zh+dlogn(W_zh))
+		b_h += alpha*((N_datapoints/N_minibatch)*db_h+dlogn(b_h))
 
 		# Reset the parameter changes from the minibatch (scale by momentum factor).
 		#
