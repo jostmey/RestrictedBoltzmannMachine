@@ -182,11 +182,11 @@
 
 		# Update parameters using stochastic gradient descent.
 		#
-		b_x += alpha*((N_datapoints/N_minibatch)*db_x+dlogn(b_x))
-		W_xh += alpha*((N_datapoints/N_minibatch)*dW_xh+dlogn(W_xh))
-		b_z += alpha*((N_datapoints/N_minibatch)*db_z+dlogn(b_z))
-		W_zh += alpha*((N_datapoints/N_minibatch)*dW_zh+dlogn(W_zh))
-		b_h += alpha*((N_datapoints/N_minibatch)*db_h+dlogn(b_h))
+		b_x += alpha*(dlogn(b_x)+(N_datapoints/N_minibatch)*db_x)
+		W_xh += alpha*(dlogn(W_xh)+(N_datapoints/N_minibatch)*dW_xh)
+		b_z += alpha*(dlogn(b_z)+(N_datapoints/N_minibatch)*db_z)
+		W_zh += alpha*(dlogn(W_zh)+(N_datapoints/N_minibatch)*dW_zh)
+		b_h += alpha*(dlogn(b_h)+(N_datapoints/N_minibatch)*db_h)
 
 		# Reset the parameter changes from the minibatch (scale by momentum factor).
 		#
