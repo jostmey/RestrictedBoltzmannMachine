@@ -14,31 +14,6 @@
 	using StatsBase
 
 ##########################################################################################
-# Dataset
-##########################################################################################
-
-	# Load package of the MNIST dataset.
-	#
-	using MNIST
-
-	# Load the dataset.
-	#
-	data = testdata()
-
-	# Scale feature values to be between 0 and 1.
-	#
-	features = data[1]'
-	features /= 255.0
-
-	# Copy over the labels.
-	#
-	labels = data[2]
-
-	# Size of the dataset.
-	#
-	N_datapoints = size(features, 1)
-
-##########################################################################################
 # Settings
 ##########################################################################################
 
