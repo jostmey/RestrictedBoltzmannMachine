@@ -36,6 +36,12 @@
 	W_zh = readcsv("bin/train_W_zh.csv")
 	b_h = readcsv("bin/train_b_h.csv")
 
+	# Randomly initialize each layer.
+	#
+	px_s = rand(N_x, N_minibatch)
+	pz_s = rand(N_z, N_minibatch)
+	ph_s = rand(N_h, N_minibatch)
+
 ##########################################################################################
 # Methods
 ##########################################################################################
@@ -54,28 +60,28 @@
 # Generate
 ##########################################################################################
 
-	# Randomly initialize each layer.
-	#
-	x_s = rand(0.0:1.0, N_x, N_minibatch)
-	h_s = rand(0.0:1.0, N_h, N_minibatch)
-	z_s = choose(rand(N_z, N_minibatch))
-
 	# Repeatedly sample the model.
 	#
 	for i = 1:N_samples
+
+		# Sample initial state of each layer.
+		#
+		h = state(ph_s[:,j])
+		x = state(px_s[:,j])
+		z = choose(pz_s[:,j])
 
 		# Repeated passes of Gibbs sampling.
 		#
 		for k = 1:N_passes
 
-			ph = sigmoid(W_xh'*x_s[:,j]+W_zh'*z_s[:,j]+b_h)
-			h_s[:,j] = state(ph)
+			ph_s[:,j] = sigmoid(W_xh'*x+W_zh'*z+b_h)
+			h = state(ph_s[:,j])
 
-			px = sigmoid(W_xh*h_s[:,j]+b_x)
-			x_s[:,j] = state(px)
+			px_s[:,j] = sigmoid(W_xh*h+b_x)
+			x = state(px_s[:,j])
 
-			pz = softmax(W_zh*h_s[:,j]+b_z)
-			z_s[:,j] = choose(pz)
+			pz_s[:,j] = softmax(W_zh*h+b_z)
+			z = choose(pz_s[:,j])
 
 		end
 
