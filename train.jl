@@ -95,10 +95,11 @@
 # Train
 ##########################################################################################
 
-	# Persistent states.
+	# Initialize persistent states.
 	#
-	x_persist = rand(0.0:1.0, N_x, N_minibatch)
-	z_persist = choose(rand(N_z, N_minibatch))
+	xp = rand(0.0:1.0, N_x, N_minibatch)
+	hp = rand(0.0:1.0, N_h, N_minibatch)
+	zp = choose(rand(N_z, N_minibatch))
 
 	# Holds change in parameters from a minibatch.
 	#
@@ -149,26 +150,16 @@
 		#
 		for j = 1:N_minibatch
 
-			# Load persistent state.
-			#
-			x = x_persist[:,j]
-			z = z_persist[:,j]
-
 			# Gibbs sampling driven by the model.
 			#
-			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
-			h = state(ph)
+			ph = sigmoid(W_xh'*xp[:,j]+W_zh'*zp[:,j]+b_h)
+			hp[:,j] = state(ph)
 
-			px = sigmoid(W_xh*h+b_x)
-			x = state(px)
+			px = sigmoid(W_xh*hp[:,j]+b_x)
+			xp[:,j] = state(px)
 
-			pz = softmax(W_zh*h+b_z)
-			z = choose(pz)
-
-			# Save persistent state.
-			#
-			x_persist[:,j] = x
-			z_persist[:,j] = z
+			pz = softmax(W_zh*hp[:,j]+b_z)
+			zp[:,j] = choose(pz)
 
 			# Summate logarithmic derivative calculated at each sample.
 			#
