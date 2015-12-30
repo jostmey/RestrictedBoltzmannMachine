@@ -150,7 +150,7 @@
 		#
 		for j = 1:N_minibatch
 
-			# Gibbs sampling driven by the model.
+			# Continue Gibbs sampling of the model using the persistent states.
 			#
 			ph = sigmoid(W_xh'*xp[:,j]+W_zh'*zp[:,j]+b_h)
 			hp[:,j] = state(ph)
