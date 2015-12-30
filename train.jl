@@ -99,8 +99,8 @@
 	# Initialize persistent states.
 	#
 	x_p = rand(0.0:1.0, N_x, N_minibatch)
-	h_p = rand(0.0:1.0, N_h, N_minibatch)
 	z_p = choose(rand(N_z, N_minibatch))
+	h_p = rand(0.0:1.0, N_h, N_minibatch)
 
 	# Holds change in parameters from a minibatch.
 	#
