@@ -54,33 +54,30 @@
 # Generate
 ##########################################################################################
 
+	# Randomly initialize each layer.
+	#
+	x_s = rand(0.0:1.0, N_x, N_minibatch)
+	h_s = rand(0.0:1.0, N_h, N_minibatch)
+	z_s = choose(rand(N_z, N_minibatch))
+
 	# Repeatedly sample the model.
 	#
 	for i = 1:N_samples
-
-                # Randomly initialize neural network.
-                #
-                x = state(rand(0.0:1.0, N_x))
-                h = state(rand(0.0:1.0, N_h))
-                z = choose(rand(N_z))
 
 		# Repeated passes of Gibbs sampling.
 		#
 		for k = 1:N_passes
 
-			ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
-			h = state(ph)
+			ph = sigmoid(W_xh'*x_s[:,j]+W_zh'*z_s[:,j]+b_h)
+			h_s[:,j] = state(ph)
 
-			px = sigmoid(W_xh*h+b_x)
-			x = state(px)
+			px = sigmoid(W_xh*h_s[:,j]+b_x)
+			x_s[:,j] = state(px)
 
-			pz = softmax(W_zh*h+b_z)
-			z = choose(pz)
+			pz = softmax(W_zh*h_s[:,j]+b_z)
+			z_s[:,j] = choose(pz)
 
 		end
-
-			# Save the samples.
-			#
 
 	end
 
