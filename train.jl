@@ -151,7 +151,7 @@
 		#
 		for j = 1:N_minibatch
 
-			# Continue Gibbs sampling of the model using the persistent states.
+			# Continue Gibbs sampling of the model using persistent states.
 			#
 			for l = 1:N_passes
 
