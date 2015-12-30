@@ -46,7 +46,7 @@
 	#
 	N_minibatch = 100
 	N_updates = round(Int, N_datapoints/N_minibatch)*500
-	N_passes = 1
+	N_passes = 3
 
 	# Number of neurons in each layer.
 	#
