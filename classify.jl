@@ -122,7 +122,7 @@
 
 			end
 
-			# Update expectation of z.
+			# Update expectation of the label.
 			#
 			Ez += pz/N_samples
 
