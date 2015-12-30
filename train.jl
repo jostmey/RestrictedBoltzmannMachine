@@ -46,6 +46,7 @@
 	#
 	N_minibatch = 100
 	N_updates = round(Int, N_datapoints/N_minibatch)*500
+	N_passes = 1
 
 	# Number of neurons in each layer.
 	#
@@ -152,22 +153,26 @@
 
 			# Continue Gibbs sampling of the model using the persistent states.
 			#
-			ph = sigmoid(W_xh'*xp[:,j]+W_zh'*zp[:,j]+b_h)
-			hp[:,j] = state(ph)
+			for l = 1:N_passes
 
-			px = sigmoid(W_xh*hp[:,j]+b_x)
-			xp[:,j] = state(px)
+				ph = sigmoid(W_xh'*xp[:,j]+W_zh'*zp[:,j]+b_h)
+				hp[:,j] = state(ph)
 
-			pz = softmax(W_zh*hp[:,j]+b_z)
-			zp[:,j] = choose(pz)
+				px = sigmoid(W_xh*hp[:,j]+b_x)
+				xp[:,j] = state(px)
+
+				pz = softmax(W_zh*hp[:,j]+b_z)
+				zp[:,j] = choose(pz)
+
+			end
 
 			# Summate logarithmic derivative calculated at each sample.
 			#
-			db_x -= x
-			dW_xh -= x*h'
-			db_z -= z
-			dW_zh -= z*h'
-			db_h -= h
+			db_x -= xp[:,j]
+			dW_xh -= xp[:,j]*hp[:,j]'
+			db_z -= zp[:,j]
+			dW_zh -= zp[:,j]*hp[:,j]'
+			db_h -= hp[:,j]
 
 		end
 
