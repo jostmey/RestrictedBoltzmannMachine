@@ -39,7 +39,7 @@ A restricted Boltzmann machines (RBM)s is a special type of Boltzmann machine, w
 
 In a Boltzmann machine, the neurons are divided into two layers: A visible layer that represents the sensory input and a hidden layer that is determined solely by its connections to the visible layer. A Boltzmann machine can be though of as a probability distribution described by an energy function `E(v,h)`, where `v` and `h` are vectors used to represent the state of the neurons in the visible and hidden layers, respectively. The energy function takes the state of each neuron in the neural network and returns a scalar value. The probability of observing the neurons in a specific state is proportional to `exp(-E(v,h))` (assuming the temperature factor is `1`). The negative sign in front of the energy means that if the energy is high the probability will be low. Because the probability is proportional to `exp(-E(v,h))`, calculating an exact probability requires a normalization constast. The normalization constant is denoted `Z` and is called the partition function. `Z` is the sum of `exp(-E(v,h))` over all possible states of `v` and `h`, so in general calculating `Z` exactly is intractable.
 
-The form of the energy function used in this model is `E(v,h)=v`<sup>`T`<sup>`*W*h+b*v+a*h`.
+The form of the energy function used in this model is `E(v,h)=v`<sup>`T`<sup>`*W*h+b*v+a*h`. `W` is matrix describing the weights of the connections between neurons in the visible and hidden layers, and `b` and `a` are vectors that describe the biases of the neurons in visible and hidden layers, respectively. The <sup>`T`<sup> tells us to transpose the vector `v` so that after multiplying `v` by `W` by `h` we are left with a scalar value.
 
 ###### Sampling
 
