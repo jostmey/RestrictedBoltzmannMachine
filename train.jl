@@ -54,7 +54,7 @@
 	N_z = 10
 	N_h = 500
 
-	# Standard deviation of Gaussian prior over the parameters.
+	# Parameters of the Guassian prior.
 	#
 	sigma = 0.1
 
