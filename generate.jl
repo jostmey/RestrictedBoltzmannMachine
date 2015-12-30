@@ -66,22 +66,22 @@
 
 		# Sample initial state of each layer.
 		#
-		h = state(ph_s[:,j])
 		x = state(px_s[:,j])
 		z = choose(pz_s[:,j])
+		h = state(ph_s[:,j])
 
 		# Repeated passes of Gibbs sampling.
 		#
 		for k = 1:N_passes
-
-			ph_s[:,j] = sigmoid(W_xh'*x+W_zh'*z+b_h)
-			h = state(ph_s[:,j])
 
 			px_s[:,j] = sigmoid(W_xh*h+b_x)
 			x = state(px_s[:,j])
 
 			pz_s[:,j] = softmax(W_zh*h+b_z)
 			z = choose(pz_s[:,j])
+
+			ph_s[:,j] = sigmoid(W_xh'*x+W_zh'*z+b_h)
+			h = state(ph_s[:,j])
 
 		end
 
