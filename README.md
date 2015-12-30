@@ -15,6 +15,10 @@ The code requires the Julia runtime environment. Instructions on how to download
 
 The scripts require several modules, which have to be installed in the Julia environment. To add them, launch `julia` and run `Pkg.add("MNIST")` and `Pkg.add("StatsBase")`.
 
+## Performance
+
+This package is not written for speed. It is meant to serve as a working example of an artificial neural network. As such, there is no GPU acceleration. Training using only the CPU can take days or even weeks. The training time can be shortened by reducing the number of updates, but this could lead to poorer performance on the test data. Consider using an exising machine learning package when searching for a deployable solution.
+
 ## RUN
 
 Training the neural network can take several days or even weeks. Set the working directory to this folder and run the following in the command line terminal.
@@ -51,9 +55,11 @@ In a RBM, connections between neurons in the same layer are removed. The only co
 
 
 
+###### Prior
 
 
 
+###### Results
 
 
 
