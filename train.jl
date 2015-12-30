@@ -155,14 +155,14 @@
 			#
 			for l = 1:N_passes
 
-				ph = sigmoid(W_xh'*x_p[:,j]+W_zh'*z_p[:,j]+b_h)
-				h_p[:,j] = state(ph)
-
 				px = sigmoid(W_xh*h_p[:,j]+b_x)
 				x_p[:,j] = state(px)
 
 				pz = softmax(W_zh*h_p[:,j]+b_z)
 				z_p[:,j] = choose(pz)
+
+				ph = sigmoid(W_xh'*x_p[:,j]+W_zh'*z_p[:,j]+b_h)
+				h_p[:,j] = state(ph)
 
 			end
 
