@@ -35,10 +35,16 @@ The percentage of correct answers will be written at the end of the text file `t
 
 ###### Model
 
-In a restricted Boltzmann machine (RBM), the neurons are divided into two layers: The visible layer that receive sensory input and the hidden layer, which is connected to the visible layer. No connections exist between neurons in the same layer, which is why this type of Boltzmann machine is said to be "restricted". The model is generative meaning that it will learn a probability distribution over its sensory input. The model is typically described using an energy function `E(v,h)=v`<sup>`T`</sup>`*W*h+b*v+a*h`. Here `v` and `h` are vectors representing the state of the neurons in the visible and hidden layers, respectively. `W` is matrix describing the weights of the connections between neurons in the visible and hidden layers, and `b` and `a` are vectors that describe the biases of the neurons in visible and hidden layers, respectively. After calculating the energy, a scalar value is obtained. The energy function describes a probability distribution. The probability distribution `P(v,h)` is proportional to `exp(-E(v,h))`. To calculate a probability, a normalization constanst is needed, which is called the partition function `Z`. `Z` is the sum over all possible values, and is given by `Z=Sum`<sub>`v,h`</sub>`{ exp(-E(v,h)) }`
+A restricted Boltzmann machines (RBM)s is a special type of Boltzmann machine, which is a generative model that can be trained to represent a dataset as a joint probability distribution. What this means is that if you draw a statistical sample from the model, it should look a new item was just added to the dataset. In otherwords, the model learns how to "make up" new examples based off of the dataset.
+
+In a Boltzmann machine, the neurons are divided into two layers: A visible layer that represents the sensory input and a hidden layer that is determined solely by its connections to the visible layer. A Boltzmann machine can be though of as a probability distribution described by an energy function `E(v,h)`, where `v` and `h` are vectors used to represent the state of the neurons in the visible and hidden layers, respectively. The energy function takes the state of each neuron in the neural network and returns a scalar value. The probability of observing the neurons in a specific state is proportional to `exp(-E(v,h))` (assuming the temperature factor is `1`). The negative sign in front of the energy means that if the energy is high the probability will be low. Because the probability is proportional to `exp(-E(v,h))`, calculating an exact probability requires a normalization constast. The normalization constant is denoted `Z` and is called the partition function. `Z` is the sum of `exp(-E(v,h))` over all possible states of `v` and `h`, so in general calculating `Z` exactly is intractable.
+
+
+
 
 Gibbs sampling is typically used to draw samples from the model. 
 
+Connections are restricted to neurons in different layers. No connections are found between neurons in the same layer. This makes inference simple. Given the state of the neurons in the visible layer, the state of the neurons in the hidden layer can be inferred in a single step, and vice versa.
 
 
 
