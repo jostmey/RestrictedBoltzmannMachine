@@ -98,9 +98,9 @@
 
 	# Initialize persistent states.
 	#
-	xp = rand(0.0:1.0, N_x, N_minibatch)
-	hp = rand(0.0:1.0, N_h, N_minibatch)
-	zp = choose(rand(N_z, N_minibatch))
+	x_p = rand(0.0:1.0, N_x, N_minibatch)
+	h_p = rand(0.0:1.0, N_h, N_minibatch)
+	z_p = choose(rand(N_z, N_minibatch))
 
 	# Holds change in parameters from a minibatch.
 	#
@@ -155,24 +155,24 @@
 			#
 			for l = 1:N_passes
 
-				ph = sigmoid(W_xh'*xp[:,j]+W_zh'*zp[:,j]+b_h)
-				hp[:,j] = state(ph)
+				ph = sigmoid(W_xh'*x_p[:,j]+W_zh'*z_p[:,j]+b_h)
+				h_p[:,j] = state(ph)
 
-				px = sigmoid(W_xh*hp[:,j]+b_x)
-				xp[:,j] = state(px)
+				px = sigmoid(W_xh*h_p[:,j]+b_x)
+				x_p[:,j] = state(px)
 
-				pz = softmax(W_zh*hp[:,j]+b_z)
-				zp[:,j] = choose(pz)
+				pz = softmax(W_zh*h_p[:,j]+b_z)
+				z_p[:,j] = choose(pz)
 
 			end
 
 			# Summate logarithmic derivative calculated at each sample.
 			#
-			db_x -= xp[:,j]
-			dW_xh -= xp[:,j]*hp[:,j]'
-			db_z -= zp[:,j]
-			dW_zh -= zp[:,j]*hp[:,j]'
-			db_h -= hp[:,j]
+			db_x -= x_p[:,j]
+			dW_xh -= x_p[:,j]*h_p[:,j]'
+			db_z -= z_p[:,j]
+			dW_zh -= z_p[:,j]*h_p[:,j]'
+			db_h -= h_p[:,j]
 
 		end
 
