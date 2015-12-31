@@ -17,15 +17,19 @@ The scripts require several modules, which have to be installed in the Julia env
 
 ## Run
 
-Training the neural network can take several days or even weeks. Set the working directory to this folder and run the following in the command line terminal.
+First, the bias terms for the neurons that will represent the features must be fitted to mean of all the features in the training dataset. Set the working directory to this folder and run the following in the command line terminal.
+
+`julia fit.jl > fit.out`
+
+The bias terms will be saved the folder `bin/`, which will be automatically created. The neural network can now be trained. This procedure can take several days to weeks. To start the training process, run the following command.
 
 `julia train.jl > train.out`
 
-The neural network will save its parameters to a folder called `bin/` once training is complete. To generate samples from the model, run the following command.
+The neural network will save its parameters to `bin/` once training is complete. At this point, the neural network will be ready to use. To generate samples from the model, run the following command.
 
 `julia generate.jl > generate.out`
 
-A sequence of samples will be saved in the image file `generate.???`. To classify the handwritten digits in the test set, run the following command.
+A sequence of samples will be saved in the image file `generate.png`. To classify the handwritten digits in the test set, run the following command.
 
 `julia classify.jl > classify.out`
 
