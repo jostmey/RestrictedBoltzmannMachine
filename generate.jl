@@ -46,6 +46,11 @@
 	pz_s = rand(N_z, N_minibatch)
 	ph_s = rand(N_h, N_minibatch)
 
+	# Image dimensions.
+	#
+	height = 28
+	width = 28
+
 ##########################################################################################
 # Methods
 ##########################################################################################
@@ -100,7 +105,51 @@
 	# img = convert(Image, rand(500,500))
 	# save("rand.png", img)
 
+	# Number of rows and columns.
+	#
+	N_columns = ceil(sqrt(N_samples))
+	N_rows = ceil(N_samples/N_columns)
 
+	#
+	#
+	pixels = zeros(height*N_rows, width*N_columns)
 
+	#
+	#
+	k = 1
 
+	#
+	#
+	for i = 1:rows
 
+		#
+		#
+		for j = 1:N_columns
+
+			#
+			#
+			is = ((i-1)*height+1):(i*height)
+			js = ((j-1)*width+1):(j*width)
+
+			#
+			#
+			pixels[is,js] = reshape(px_s[:,k], height, width)
+
+			#
+			#
+			k += 1
+			if k > N_samples
+				break
+			end
+
+		end
+
+	end
+
+	# Create grayscale image with black background.
+	#
+	img = convert(Image, pixels)
+
+	#
+	#
+	save("generate.png", img)
