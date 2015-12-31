@@ -15,10 +15,8 @@ The code requires the Julia runtime environment. Instructions on how to download
 
 The scripts require several modules, which have to be installed in the Julia environment. To add them, launch `julia` and run the following commands.
 
-`Pkg.add("MNIST")`
-
-`Pkg.add("StatsBase")`
-
+`Pkg.add("MNIST")`  
+`Pkg.add("StatsBase")`  
 `Pkg.add("Images")`
 
 The first package contains the MNIST dataset of handwritten digits. The seconds package contains a tool for sampling from a set of weighted choices. The last package is used to render images.
@@ -27,8 +25,7 @@ The first package contains the MNIST dataset of handwritten digits. The seconds 
 
 Fitting the bias terms of the neurons representing the features using the dataset before training the neural network greatly improves the results. After fitting, the neural network can be trained, which can last anywhere from a few days to several weeks. To start the process, run the following commands.
 
-`julia fit.jl > fit.out`
-
+`julia fit.jl > fit.out`  
 `julia train.jl > train.out`
 
 The scripts will automatically create a folder called `bin` where the neural network parameters will be saved. At this point, the neural network will be ready to use. To generate samples from the model, run the following command.
