@@ -67,7 +67,7 @@
 	W_zh = sigma*randn(N_z, N_h)
 	b_h = sigma*randn(N_h)
 
-	# Initial learning rate (scale value by inverse factor used in stochastic gradient descent).
+	# Initial learning rate (scaled by inverse factor used in stochastic gradient descent).
 	#
 	alpha = 0.001*(N_minibatch/N_datapoints)
 
