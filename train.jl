@@ -107,7 +107,7 @@
 	#
 	for i = 1:N_minibatch
 
-		# Several passes of Gibbs sampling to equilibrate the model.
+		# Several passes of Gibbs sampling to equilibrate the persistent state.
 		#
 		for j = 1:N_equilibrate
 
