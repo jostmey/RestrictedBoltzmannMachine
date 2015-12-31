@@ -15,7 +15,7 @@
 
 	# Load tools for saving images.
 	#
-	using Image
+	using Images
 
 ##########################################################################################
 # Settings
@@ -42,9 +42,9 @@
 
 	# Randomly initialize each layer.
 	#
-	px_s = rand(N_x, N_minibatch)
-	pz_s = rand(N_z, N_minibatch)
-	ph_s = rand(N_h, N_minibatch)
+	px_s = rand(N_x, N_samples)
+	pz_s = rand(N_z, N_samples)
+	ph_s = rand(N_h, N_samples)
 
 	# Image dimensions.
 	#
@@ -75,26 +75,28 @@
 
 		# Sample initial state of each layer.
 		#
-		x = state(px_s[:,j])
-		z = choose(pz_s[:,j])
-		h = state(ph_s[:,j])
+		x = state(px_s[:,i])
+		z = choose(pz_s[:,i])
+		h = state(ph_s[:,i])
 
 		# Repeated passes of Gibbs sampling.
 		#
-		for k = 1:N_passes
+		for j = 1:N_passes
 
-			px_s[:,j] = sigmoid(W_xh*h+b_x)
-			x = state(px_s[:,j])
+			px_s[:,i] = sigmoid(W_xh*h+b_x)
+			x = state(px_s[:,i])
 
-			pz_s[:,j] = softmax(W_zh*h+b_z)
-			z = choose(pz_s[:,j])
+			pz_s[:,i] = softmax(W_zh*h+b_z)
+			z = choose(pz_s[:,i])
 
-			ph_s[:,j] = sigmoid(W_xh'*x+W_zh'*z+b_h)
-			h = state(ph_s[:,j])
+			ph_s[:,i] = sigmoid(W_xh'*x+W_zh'*z+b_h)
+			h = state(ph_s[:,i])
 
 		end
 
 	end
+
+writecsv("bin/generate_px_s.csv", px_s)
 
 ##########################################################################################
 # Figure
@@ -107,8 +109,8 @@
 
 	# Number of rows and columns.
 	#
-	N_columns = ceil(sqrt(N_samples))
-	N_rows = ceil(N_samples/N_columns)
+	N_columns = ceil(Int, sqrt(N_samples))
+	N_rows = ceil(Int, N_samples/N_columns)
 
 	#
 	#
@@ -120,7 +122,7 @@
 
 	#
 	#
-	for i = 1:rows
+	for i = 1:N_rows
 
 		#
 		#
@@ -128,12 +130,12 @@
 
 			#
 			#
-			is = ((i-1)*height+1):(i*height)
-			js = ((j-1)*width+1):(j*width)
+			is = (i-1)*height+1:i*height
+			js = (j-1)*width+1:j*width
 
 			#
 			#
-			pixels[is,js] = reshape(px_s[:,k], height, width)
+			pixels[is, js] = reshape(px_s[:,k], height, width)
 
 			#
 			#
