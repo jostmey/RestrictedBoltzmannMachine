@@ -31,7 +31,7 @@ Fitting the bias terms of the neurons representing the features using the datase
 
 `julia train.jl > train.out`
 
-The scripts will automatically create a folder called `bin/` where the neural network parameters will be saved. At this point, the neural network will be ready to use. To generate samples from the model, run the following command.
+The scripts will automatically create a folder called `bin` where the neural network parameters will be saved. At this point, the neural network will be ready to use. To generate samples from the model, run the following command.
 
 `julia generate.jl > generate.out`
 
