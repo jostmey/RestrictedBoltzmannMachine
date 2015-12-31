@@ -143,9 +143,9 @@
 
 	# Create grayscale image with black background.
 	#
-	img = convert(Image, pixels)
+	figure = convert(Image, pixels)
 
 	# Save the tiles as an image file.
 	#
-	save("generate.png", img)
+	save("generate.png", figure)
 
