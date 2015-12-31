@@ -129,7 +129,7 @@
 
 			# Load the labels into the visible layer.
 			#
-			z = zeros(10)
+			z = zeros(N_z)
 			z[round(Int, labels[k])+1] = 1.0
 
 			# Gibbs sampling driven by the data.
