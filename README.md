@@ -13,19 +13,25 @@ The generative model is trained on both the features and labels of the MNIST dat
 
 The code requires the Julia runtime environment. Instructions on how to download and install Julia are [here](http://julialang.org/). The scripts have been developed using version 0.4 and do not work on previous versions of Julia.
 
-The scripts require several modules, which have to be installed in the Julia environment. To add them, launch `julia` and run `Pkg.add("MNIST")` and `Pkg.add("StatsBase")`.
+The scripts require several modules, which have to be installed in the Julia environment. To add them, launch `julia` and run the following commands.
+
+`Pkg.add("MNIST")`
+
+`Pkg.add("StatsBase")`
+
+`Pkg.add("Images")`
+
+The first package contains the MNIST dataset of handwritten digits. The seconds package contains a tool for sampling from a set of weighted choices. The last package is used to render images.
 
 ## Run
 
-First, the bias terms for the neurons that will represent the features must be fitted to mean of all the features in the training dataset. Set the working directory to this folder and run the following in the command line terminal.
+Fitting the bias terms for the neurons representing the features can greatly improve the results. After the fitting procedure is complete the neural network can be trained. The training procedure can take several days to weeks. To start the process, run the following commands.
 
 `julia fit.jl > fit.out`
 
-The bias terms will be saved the folder `bin/`, which will be automatically created. The neural network can now be trained. This procedure can take several days to weeks. To start the training process, run the following command.
-
 `julia train.jl > train.out`
 
-The neural network will save its parameters to `bin/` once training is complete. At this point, the neural network will be ready to use. To generate samples from the model, run the following command.
+The scripts will automatically create a folder called `bin/` where the neural network parameters will be saved. At this point, the neural network will be ready to use. To generate samples from the model, run the following command.
 
 `julia generate.jl > generate.out`
 
