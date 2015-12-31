@@ -1,3 +1,5 @@
+# ---WORK IN PROGRESS ---
+
 ## Description
 
 Example scripts for a restricted Boltzmann machine (RBM), which is a type of generative model, have been written from scratch. No machine learning packages are used, providing an example of how to implement the underlying algorithms of an artificial neural network. The code is written in the Julia, a programming language with a syntax similar to Matlab.
