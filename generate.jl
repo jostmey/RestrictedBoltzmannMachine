@@ -96,48 +96,41 @@
 
 	end
 
-writecsv("bin/generate_px_s.csv", px_s)
-
 ##########################################################################################
 # Figure
 ##########################################################################################
 
-	# Example of how to create and save an image.
-	#
-	# img = convert(Image, rand(500,500))
-	# save("rand.png", img)
-
-	# Number of rows and columns.
+	# Samples will rendered in tiles by rows and columns.
 	#
 	N_columns = ceil(Int, sqrt(N_samples))
 	N_rows = ceil(Int, N_samples/N_columns)
 
-	#
+	# Pixels on which the tiles will be rendered.
 	#
 	pixels = zeros(height*N_rows, width*N_columns)
 
-	#
+	# Index of the tiles.
 	#
 	k = 1
 
-	#
+	# Loop over the rows of the tiles.
 	#
 	for i = 1:N_rows
 
-		#
+		# Loop over the columns of the tiles.
 		#
 		for j = 1:N_columns
 
-			#
+			# Indices for selecting the current tile.
 			#
 			is = (i-1)*height+1:i*height
 			js = (j-1)*width+1:j*width
 
-			#
+			# Copy the sample into the tile.
 			#
 			pixels[is, js] = reshape(px_s[:,k], height, width)
 
-			#
+			# Update the index for the tile.
 			#
 			k += 1
 			if k > N_samples
@@ -152,7 +145,7 @@ writecsv("bin/generate_px_s.csv", px_s)
 	#
 	img = convert(Image, pixels)
 
-	#
+	# Save the tiles as an image file.
 	#
 	save("generate.png", img)
 
