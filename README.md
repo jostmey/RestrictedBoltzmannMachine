@@ -37,7 +37,7 @@ This package is not written for speed. It is meant to serve as a working example
 
 ## Theory
 
-###### MODEL
+###### Model
 
 A restricted Boltzmann machines (RBM)s is a special type of Boltzmann machine, which is a generative model that can be trained to represent a dataset as a joint probability distribution. What this means is that if you draw a statistical sample from the model, it should look a new item was just added to the dataset. In otherwords, the model learns how to "make up" new examples based off of the dataset.
 
@@ -45,21 +45,21 @@ In a Boltzmann machine, the neurons are divided into two layers: A visible layer
 
 The form of the energy function used in this model is `E(v,h) = v'*W*h + b'*v + a'*h`. `W` is matrix describing the weights of the connections between neurons in the visible and hidden layers, and `b` and `a` are vectors that describe the biases of the neurons in visible and hidden layers, respectively. The `'` tells us to transpose the vector so that we always end up with a scale after each multiplication.
 
-###### SAMPLING
+###### Sampling
 
 Gibbs sampling is used to update the value of each neuron. Assuming that each neuron has only two states `0` and `1`, we can calculate the probability of the i<sup>th</sup> being on given the state of the entire neural network. The probability that the i<sup>th</sup> neuron is on is proportional to `exp(-E(v,h|i=1))` while the total probability that the i<sup>th</sup>neuron is either on or off is proportional to `exp(-E(v,h|i=0)) + exp(-E(v,h|i=1))`. Because the total probability is always `1`, we can divide the probability by the total probability and get the same answer. What this means is that normalization constant `Z` will cancel out, so that the probability that the i<sup>th</sup> neuron is on is `exp(-E(v,h|i=1))` divided by `exp(-E(v,h|i=0)) + exp(-E(v,h|i=1))`. The division simplifies to `Sigmoid( E(v,h|i=1) - E(v,h|i=1) )`. The neural network is run by taking each neuron one at a time and calculating its probability of having a value of `1`. The neuron is then randomly assigned a new state of either `0` or `1` based on this probability. After updating each neuron a sufficient number of time the neural network will eventually reach what is called equilibrium. 
 
 In a RBM, connections between neurons in the same layer are removed. The only connections that exist are between the visible and hidden layers. Because the neurons in the same layer are statistically independent of each other given the state of the other layer, neurons in the same layer can be updated simultaneously in a single sweep. Sampling in a RBM becomes quite simple. Given the state of the neurons in the visible layer, the state of the neurons in the hidden layer can be calculated in a single step, and vice versa.
 
-###### TRAINING
+###### Training
 
 
 
-###### PRIOR
+###### Prior
 
 
 
-###### RESULTS
+###### Results
 
 
 
