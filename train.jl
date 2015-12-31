@@ -60,7 +60,7 @@
 
 	# Initialize neural network parameters.
 	#
-	b_x = sigma*randn(N_x)
+	b_x = readcsv("bin/fit_b_x.csv")
 	W_xh = sigma*randn(N_x, N_h)
 	b_z = sigma*randn(N_z)
 	W_zh = sigma*randn(N_z, N_h)
