@@ -25,7 +25,7 @@ The first package contains the MNIST dataset of handwritten digits. The seconds 
 
 ## Run
 
-Fitting the bias terms for the neurons representing the features can greatly improve the results. After the fitting procedure is complete the neural network can be trained. The training procedure can take several days to weeks. To start the process, run the following commands.
+Fitting the bias terms of the neurons representing the features using the dataset before training the neural network greatly improves the results. After fitting, the neural network can be trained, which can last anywhere from a few days to several weeks. To start the process, run the following commands.
 
 `julia fit.jl > fit.out`
 
