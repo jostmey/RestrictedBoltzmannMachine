@@ -68,7 +68,7 @@
 
 	# Initial learning rate (scale value by inverse factor used in stochastic gradient descent).
 	#
-	alpha = 0.01*(N_minibatch/N_datapoints)
+	alpha = 0.001*(N_minibatch/N_datapoints)
 
 	# Momentum factor.
 	#
