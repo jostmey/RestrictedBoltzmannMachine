@@ -93,7 +93,7 @@
 	dlogn(theta) = -theta/sigma^2
 
 ##########################################################################################
-# Train
+# Initialize
 ##########################################################################################
 
 	# Initialize persistent states.
@@ -101,6 +101,31 @@
 	x_p = rand(0.0:1.0, N_x, N_minibatch)
 	z_p = choose(rand(N_z, N_minibatch))
 	h_p = rand(0.0:1.0, N_h, N_minibatch)
+
+	# Loop over every persistent state.
+	#
+	for i = 1:N_minibatch
+
+		# Several passes of Gibbs sampling to equilibrate the model.
+		#
+		for j = 1:N_equilibrate
+
+			px = sigmoid(W_xh*h_p[:,i]+b_x)
+			x_p[:,i] = state(px)
+
+			pz = softmax(W_zh*h_p[:,i]+b_z)
+			z_p[:,i] = choose(pz)
+
+			ph = sigmoid(W_xh'*x_p[:,i]+W_zh'*z_p[:,i]+b_h)
+			h_p[:,i] = state(ph)
+
+		end
+
+	end
+
+##########################################################################################
+# Train
+##########################################################################################
 
 	# Holds change in parameters from a minibatch.
 	#
