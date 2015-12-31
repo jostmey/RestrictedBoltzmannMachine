@@ -66,11 +66,11 @@ Boltzmann machines can be fit to a dataset by obtaining a maximum-likelihood est
 
 The derivative of the log-likelihood function for a neural nework is remarkably simple. It is the difference between two expectations. The first expectation is `<-dE(v,h)/du)>`<sub>`DATA`</sub>, where `u` is the parameter, is calculated over the dataset. The result is subtracted by the second expectation `<-dE(v,h)/du>`<sub>`MODEL`</sub>. Each of the two expectations can be estimated by collecting a set of samples, a process that is called Markov Chain Monte-Carlo. For the first expectation, the neurons in the visible layer is set to the values of an item in the dataset and the neurons in the hidden layer are updated until equilibrium is reached. For a RBM, only a single sweep is required to reach equilibrium. The latter expectation is harder to sample. It requires starting from a random configuration of the neurons in the visible and hidden layers, and sampling until the model reaches equilibrium. Because none of the neurons are clamped, it can take awhile to reach equilibrium... Persistent States...
 
-
+Stochastic Gradient Descent
 
 ###### Prior
 
-
+Gaussian prior added to parameters. Becomes MAP estimate
 
 ###### Results
 
