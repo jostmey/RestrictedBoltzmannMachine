@@ -44,8 +44,8 @@
 
 	# Schedule for updating the neural network.
 	#
+	N_equilibrate = 10
 	N_samples = 100
-	N_passes = 10
 
 	# Number of neurons in each layer.
 	#
@@ -112,7 +112,7 @@
 
 			# Repeated passes of Gibbs sampling.
 			#
-			for k = 1:N_passes
+			for k = 1:N_equilibrate
 
 				ph = sigmoid(W_xh'*x+W_zh'*z+b_h)
 				h = state(ph)
