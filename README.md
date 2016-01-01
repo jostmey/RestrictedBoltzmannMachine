@@ -21,7 +21,7 @@ The scripts require several modules, which have to be installed in the Julia env
 `Pkg.add("StatsBase")`  
 `Pkg.add("Images")`
 
-The first package contains the MNIST dataset of handwritten digits. The seconds package contains a tool for sampling from a set of weighted choices. The last package is used to render images.
+The first package contains the MNIST dataset of handwritten digits. The seconds package contains a tool for sampling from a set of weighted choices. The last package is used to render images. The first time the image package is run it may ask to install additional software (consider entering `using Images` into the Julia environment anf then running the `generate.jl`).
 
 ## Run
 
