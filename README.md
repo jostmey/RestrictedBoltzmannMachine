@@ -78,7 +78,11 @@ Normally the training data should be split into a training and validation set. M
 
 ###### Model
 
-In this example, the features and labels of the MNIST dataset of handwritten digits was loaded into the visible layer. Because the neural network learns how to generate samples that resemble what it is trained on, the neural network learns not only how to generate samples that look like the features it might see, but it also assigns it a correspoding label.
+In this example, the features and labels of the MNIST dataset of handwritten digits was loaded into the visible layer. This way, the neural network can be used as a generative model to create samples that resemble what it is trained on while at the same time allowing it to be used as a classifier. HOW TO REPRESENT FEATURES, HOW TO REPRESENT LABELS!
+
+To run as a generative model, each of the neurons must be updated until the neural network reaches equilibrium. At this point, the neurons in the visible layer that corresponded to the features are read and their values used to generate an image. The resulting images resemble the types of things found in the training data.
+
+To run as a classifier, we must compute the expected value of the label given the features. To generate samples for this expectation, the features and a random label are loaded into the visible layer. The neurons in the hidden layer along with the neuron represneting the label are repeatedly updated until equilibrium is reached. The value of the label after reaching equilirium is then used to help calculate the expectation.
 
 ###### References
 
