@@ -76,8 +76,9 @@ The neural network contains nearly `400 000` parameters. To prevent overfitting,
 
 Normally the training data should be split into a training and validation set. Multiple versions of the model are then trained on training set each using different learning rates, momentum factors, prior distributions, and number of updates. The model that scores the highest on the validation set is then used on the test data. The use of a validation set means that the test data is never seen while selecting the best model, which would be cheating. That said, no validation set is used in this example because the model was never refined--only one version of the model was trained. This model was then tested directly on the test data.
 
-###### Results
+###### Model
 
+In this example, the features and labels of the MNIST dataset of handwritten digits was loaded into the visible layer. Because the neural network learns how to generate samples that resemble what it is trained on, the neural network learns not only how to generate samples that look like the features it might see, but it also assigns it a correspoding label.
 
 ###### References
 
