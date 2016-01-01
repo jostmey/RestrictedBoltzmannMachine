@@ -86,6 +86,9 @@ To run as a classifier, we must compute the expected value of the label given th
 
 ###### References
 
+[comment]: # (BIBLIOGRAPHY STYLE: MLA)
 
-WORK IN PROGRESS... CHECK BACK LATER...
-
+1. Ackley, David H., Geoffrey E. Hinton, and Terrence J. Sejnowski. "A learning algorithm for boltzmann machines*." Cognitive science 9.1 (1985): 147-169.
+2. Smolensky, Paul. "Chapter 6: Information Processing in Dynamical Systems: Foundations of Harmony Theory. Processing of the Parallel Distributed: Explorations in the Microstructure of Cognition, Volume 1: Foundations." (1986).
+3. Robbins, Herbert, and Sutton Monro. "A stochastic approximation method." The annals of mathematical statistics (1951): 400-407.
+4. Tieleman, Tijmen. "Training restricted Boltzmann machines using approximations to the likelihood gradient." Proceedings of the 25th international conference on Machine learning. ACM, 2008.
