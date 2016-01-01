@@ -23,8 +23,8 @@
 
 	# Schedule for updating the neural network.
 	#
+	N_equilibrate = 100
 	N_samples = 100
-	N_passes = 100
 
 	# Number of neurons in each layer.
 	#
@@ -81,7 +81,7 @@
 
 		# Repeated passes of Gibbs sampling.
 		#
-		for j = 1:N_passes
+		for j = 1:N_equilibrate
 
 			px_s[:,i] = sigmoid(W_xh*h+b_x)
 			x = state(px_s[:,i])
