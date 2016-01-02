@@ -23,7 +23,7 @@
 
 	# Schedule for updating the neural network.
 	#
-	N_equilibrate = 100
+	N_equilibrate = 1000
 	N_samples = 100
 
 	# Number of neurons in each layer.
@@ -63,7 +63,7 @@
 	# Sampling methods.
 	#
 	state(p) = 1.0*(rand(size(p)) .<= p)
-	choose(p) = ( y = zeros(size(p)) ; for i=1:size(p, 2) j=sample(WeightVec(p[:,i])) ; y[j,i] = 1.0 end  ; y )
+	choose(p) = ( y = zeros(size(p)) ; for i = 1:size(p, 2) j = sample(WeightVec(p[:,i])) ; y[j,i] = 1.0 end  ; y )
 
 ##########################################################################################
 # Generate
