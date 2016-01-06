@@ -6,6 +6,8 @@ Example scripts for a restricted Boltzmann machine (RBM), which is a type of gen
 
 The generative model is trained on both the features and labels of the MNIST dataset of handwritten digits. Samples drawn from the model are nearly indistinguishable from handwritten digits. The model is then used as a classifier by loading the features and running a Markov chain until the model has reached equilibrium, at which point the expected value of the label is tabulated. The model correctly classifies XX % of the handwritten digits in the test dataset.
 
+![alt text](generate.png "Samples generated from RBM")
+
 ## Download
 
 * Download: [zip](https://github.com/jostmey/RestrictedBoltzmannMachine/zipball/master)
