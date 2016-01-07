@@ -4,7 +4,7 @@
 
 Example scripts for a type of artificial neural network called a Restricted Boltzmann Machine (RBM) are written from scratch, revealing how to implement the underlying algorithms without the need of an external library. The model is trained using Persistent Contrastive Divergence (PCD), an algorithm that loosely resembles Hebbian learning. All code is written in Julia, a programming language with a syntax similar to Matlab.
 
-The neural network is trained as a generative model on the MNIST dataset of handwritten digits. Many of the samples from the model look as if they were drawn by a person. Because the label for each handwritten digit is included in the model, the neural network can also be used to classify handwritten digits. Predictions are made by computing the expected value of the label given the features, removing the need to fine-tune the neural network as a discriminative model. With this approach, an accuracy of 98.18 % is achieved on the test dataset.
+The neural network is trained as a generative model on the MNIST dataset of handwritten digits. Many of the samples collected from the model look as if they were drawn by a person. Because the label for each handwritten digit is included during the training process, the neural network can also be used to classify handwritten digits. Predictions are made by computing the expected value of the label given the features, removing the need to fine-tune the neural network as a discriminative model. With this approach, an accuracy of 98.18 % is achieved on the test dataset.
 
 ![alt text](generate.png "Samples generated from RBM")
 
