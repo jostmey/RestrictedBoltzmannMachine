@@ -1,5 +1,3 @@
---- WORK IN PROGRESS ---
-
 ## Description
 
 Example scripts for a type of artificial neural network called a Restricted Boltzmann Machine (RBM) are written from scratch, revealing how to implement the underlying algorithms without the need for an external library. The model is trained using Persistent Contrastive Divergence (PCD), an algorithm that loosely resembles Hebbian learning. All code is written in Julia, a programming language with a syntax similar to Matlab.
@@ -78,11 +76,9 @@ Normally the training data should be split into a training and validation set. M
 
 ###### Model
 
-In this example, the features and labels of the MNIST dataset of handwritten digits were loaded into the visible layer. This way, the neural network can be used as a generative model to create samples that resemble what it is trained on while at the same time allowing it to be used as a classifier. To represent the features of the MNIST dataset, the intensity of each pixel is used as the mean value of a Bernoulli distirubion. Samples collected from the Bernoulli distribution, which are binary, can then be loaded into the visible layer. To represent the layer, a softmax unit is used, which is a multinomial generalization of a neuron. The use of a softmax unit does not change the gradient optimization procedure used to fit the parameters.
+The RMB is trained as a generative model. Samples are then obtained from the model by placing each neuron in a random configuration and running the neural network until it reaches equilibrium. The state of the visible vector `v` can then be plotted to visualize what the result. Many of the images created by the model look as if a person drawn the symbol.
 
-To run as a generative model, each of the neurons must be updated until the neural network reaches equilibrium. At this point, the neurons in the visible layer that corresponded to the features are read and their values used to generate an image. The resulting images resemble the types of things found in the training data.
-
-To run as a classifier, we must compute the expected value of the label given the features. To generate samples for this expectation, the features and a random label are loaded into the visible layer. The neurons in the hidden layer along with the neuron represneting the label are repeatedly updated until equilibrium is reached. The value of the label after reaching equilibrium is then used to help calculate the expectation.
+In this example, the labels of each MNIST digit have been included in the visible layer next to the features. We can run the model as a classifier by computing the expected label given the features. To sample the label, the features must be loaded into the visible layer. The neurons in the hidden layer along with the neuron represneting the label are repeatedly updated until equilibrium is reached. The value of the label after reaching equilibrium is then used to help calculate the expectation. Following this procedure, the model scores 99.18 % on the validation set, which is close to state of the art for a model that does not know that the image can be translated like a convolutional neural network would.
 
 ###### References
 
