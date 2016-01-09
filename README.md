@@ -21,7 +21,7 @@ Several modules are required. To install them, launch `julia` and run the follow
 `Pkg.add("StatsBase")`  
 `Pkg.add("Images")`
 
-The first package contains both the training and test data of the MNIST set of handwritten digits. The second package contains a function used to randomly pick among among a set of weighted choices. The last package is used to render images created by the model. If the rendering fails trying running`using Images` in `julia` to see if any other software will need to be installed.
+The first package contains both the training and test data of the MNIST set of handwritten digits. The second package contains a function used to randomly pick among among a set of weighted choices. The last package is used to render images created by the model. If the rendering fails trying running `using Images` in `julia` to see if any other software needs to be installed.
 
 ## Run
 
@@ -30,19 +30,19 @@ The first step in building the model is to pre-fit the bias terms of each neuron
 `julia fit.jl > fit.out`  
 `julia train.jl > train.out`
 
-The scripts automatically create a folder called `bin` where the parameters of the trained neural network are saved once the model is built. To generate samples from the neural network, run the following command.
+The scripts automatically create a folder called `bin` where the parameters of the trained neural network are saved once the model is trained. To generate samples from the neural network, run the following command.
 
 `julia generate.jl > generate.out`
 
-A sequence of samples will be saved to`generate.png`. To classify the handwritten digits in the test set, run the below command.
+A sequence of samples will be rendered and saved to`generate.png`. To classify the handwritten digits in the test set, run the below command.
 
 `julia classify.jl > classify.out`
 
-The accuracy of the model will be written at the end of `classify.out`.
+The accuracy of the model will be printed at the end of `classify.out`.
 
 ## Performance
 
-This package is not written for speed. It is meant to serve as a working example of an artificial neural network. As such, there is no GPU acceleration. Training can take days using only the CPU. The training time can be shortened by reducing the number of updates, but this could lead to poorer performance on the test data. Consider using an existing machine learning package when searching for a deploy ready solution.
+This package is not written for speed. It is meant to serve as a working example of an artificial neural network. As such, there is no GPU acceleration. Training can take days using only the CPU. The training time can be shortened by reducing the number of updates, but this could lead to poorer performance on the test data. Consider using an existing machine learning package when searching for a solution ready to be deployed.
 
 ## Theory
 
@@ -56,7 +56,7 @@ In a typical RBM, the energy function takes the form `E(v,h) = -v'*W*h - b'*v - 
 
 ###### Sampling
 
-Gibbs sampling is used to update the state of each neuron. Imagine flipping the i<sup>th</sup> neuron so that is `on` while leaving the rest of the neural network unchanged. We will write the energy associated with this state as `E`<sub>`i=1`</sub>`(v,h)`. The probability that the i<sup>th</sup> neuron is `on` is therefore proportional to `exp(-E`<sub>`i=1`</sub>`(v,h))`. To get rid of the normalization constant `Z` we will divide this by the total probability that the i<sup>th</sup> neuron is either `on` or `off` which is proportional to `exp(-E`<sub>`i=0`</sub>`(v,h)) + exp(-E`<sub>`i=1`</sub>`(v,h))`. The division will not change the result because the total probability that the i<sup>th</sup> neuron is either `on` or `off` must add up to one, but the normalization constant `Z` will cancel out. With the normalization constant removed, the quotient can be written in terms of the logistic function by dividing the top and bottom by the numerator, in which case the result is `Sigmoid(-E`<sub>`i=0`</sub>`(v,h) - E`<sub>`i=1`</sub>`(v,h))`. Once we have calculated the probability of the i<sup>th</sup> neuron being `on`, we can randomly assign it a new state of either `0` or `1` based on its probability. The entire neural network can be updated by looping over each neuron and updating it. After passing over and updating every neuron in the neural network several time, the model can reach what is called equilibrium.
+Gibbs sampling is used to update the state of each neuron. Imagine flipping the i<sup>th</sup> neuron so that is `on` while leaving the rest of the neural network unchanged. We will write the energy associated with this state as `E`<sub>`i=1`</sub>`(v,h)`. The probability that the i<sup>th</sup> neuron is `on` is therefore proportional to `exp(-E`<sub>`i=1`</sub>`(v,h))`. To get rid of the normalization constant `Z`, we will divide the probability that the i<sup>th</sup> neuron is `on` by the total probability that the i<sup>th</sup> neuron is either `on` or `off`, which is proportional to `exp(-E`<sub>`i=0`</sub>`(v,h)) + exp(-E`<sub>`i=1`</sub>`(v,h))`. The division will not change the result because the total probability that the i<sup>th</sup> neuron is either `on` or `off` must always add up to `1`, but the normalization constant `Z` will cancel out. With the normalization constant removed, the quotient can be written in terms of the logistic function by dividing the top and bottom by the numerator, in which case the result is `Sigmoid(-E`<sub>`i=0`</sub>`(v,h) - E`<sub>`i=1`</sub>`(v,h))`. Once we have calculated the probability of the i<sup>th</sup> neuron being `on`, we can randomly assign it a new state of either `0` or `1` based on its probability. The entire neural network can be updated by looping over each neuron and assiging it a new random state. After passing over every neuron in the neural network several times, the model will reach what is called equilibrium.
 
 A RBM is said to be restricted because connections between neurons in the same layer are removed (unlike a general Boltzmann machine). The only connections that exist are between the visible and hidden layers. Without cross connections, neurons in the same layer depend only on the state of the neurons in the other layer. Therefore, neurons in the same layer can be updated simultaneously in a single sweep. All the neurons in the hidden layer can be updated simultaneously given the visible layer, and then all the neurons in the visible layer can be updated given the new state of the hidden layer. The process must be repeated many times to reach equilibrium.
 
@@ -70,13 +70,13 @@ One problem with gradient optimization methods is that the fitting procedure may
 
 ###### Prior
 
-The neural network contains nearly `400 000` parameters. To prevent overfitting, a prior is added to the parameters to reduce the hypothesis space. In this example we use a Gaussian centered as zero. To account for the prior, we have to add the log-derivative of the prior to each weight update. This bias term that is added to the fitting procedure means that instead of obtaining a MLE for the model's parameters we are obtaining a Maximum A Posteriori (MAP) estimation.
+The neural network contains nearly `400 000` parameters. To prevent overfitting, a prior is added to the parameters to reduce the size of the hypothesis space. In this example, we use a Gaussian centered as zero for each prior distribution. To account for the prior, we have to add the log-derivative of the prior to each weight update. This bias term that is added to the fitting procedure means that instead of obtaining a Maximum A Posteriori (MAP) estimation of the model's parameters, not just a MLE.
 
-Normally the training data should be split into a training and validation set. Multiple versions of the model are then tried on the training set, each using different values for the learning rate, momentum factor, prior probability distribution, and number of updates. The model that scores the highest on the validation set is then used on the test data. The use of a validation set means that the test data is never seen while selecting the best model, which would otherwise amount to cheating. That said, no validation set is used in this example because the model is never refined--only one version of the model is trained. This model is then tested directly on the test data.
+Normally the training data should be split into a training and validation set. Multiple versions of the model are then tried on the training set, each model run using a different learning rate, momentum factor, prior probability distribution, and number of updates. The model that scores the highest on the validation set is then used on the test data. The use of a validation set means that the test data is never seen while selecting the best model, which would otherwise amount to cheating. That said, no validation set is used in this example because the model is never refined--only one version of the model is trained. This model is then tested directly on the test data.
 
 ###### Model
 
-The RMB is trained as a generative model. Samples are then obtained from the model by placing each neuron in a random configuration and running the neural network until it reaches equilibrium. The state of the visible vector `v` can then be plotted to visualize what the result. Many of the images created by the model look as if a person drawn the symbol.
+The RMB is trained as a generative model. Samples are then obtained from the model by starting each neuron in a random state and running the neural network until it reaches equilibrium. The state of the visible vector `v` can then be plotted to visualize the result. Many of the images created by the model look as if a person drawn the symbol.
 
 In this example, the labels of each MNIST digit have been included in the visible layer next to the features. We can run the model as a classifier by computing the expected label given the features. To sample the label, the features must be loaded into the visible layer. The neurons in the hidden layer along with the neuron representing the label are repeatedly updated until equilibrium is reached. The value of the label after reaching equilibrium is then used to help calculate the expectation. Following this procedure, the model scores 99.18 % on the validation set, which is close to state of the art for a model that does not know that the image can be translated like a convolutional neural network would.
 
