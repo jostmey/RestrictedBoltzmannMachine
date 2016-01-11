@@ -27,12 +27,12 @@ The first package contains both the training and test data of the MNIST set of h
 
 The first step in building the model is to pre-fit the bias terms of each neuron to the mean of the data. Then the training procedure can be started. The process may take several days to complete. To get started, run the following commands.
 
-`julia fit.jl > fit.out`  
-`julia train.jl > train.out`
+`julia fit.jl`  
+`julia train.jl`
 
 The scripts automatically create a folder called `bin` where the parameters of the trained neural network are saved once the model is trained. To generate samples from the neural network, run the following command.
 
-`julia generate.jl > generate.out`
+`julia generate.jl`
 
 A sequence of samples will be rendered and saved to`generate.png`. To classify the handwritten digits in the test set, run the below command.
 
