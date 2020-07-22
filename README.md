@@ -1,3 +1,5 @@
+# Recurrent Neural Network for Generating Synthetic Images
+
 ## Description
 
 Example scripts for a type of artificial neural network called a Restricted Boltzmann Machine (RBM) are written from scratch, revealing how to implement the underlying algorithms without the need for an external library. The model is trained using Persistent Contrastive Divergence (PCD), an algorithm that loosely resembles Hebbian learning. All code is written in Julia, a programming language with a syntax similar to Matlab.
